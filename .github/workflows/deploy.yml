@@ -72,15 +72,28 @@ jobs:
           mkdir -p .next/standalone/.next
           cp -r .next/static .next/standalone/.next/static
 
-      - name: Sync build to server
-        # --delete keeps the server in sync with this build, but uploads and the
-        # Passenger tmp/ control folder are runtime data and must survive deploys.
+      - name: Clean previous build on server
+        # No rsync on the server, so we clear old build output ourselves before
+        # extracting the new one. public/uploads and tmp are runtime data and
+        # must survive — only their siblings get removed.
         run: |
-          rsync -az --delete \
-            --exclude 'public/uploads' \
-            --exclude 'tmp' \
-            -e "ssh -i ~/.ssh/id_deploy -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=yes" \
-            .next/standalone/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+          ssh -i ~/.ssh/id_deploy -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" '
+            set -e
+            mkdir -p "${{ secrets.DEPLOY_PATH }}"
+            cd "${{ secrets.DEPLOY_PATH }}"
+            find . -mindepth 1 -maxdepth 1 ! -name public ! -name tmp -exec rm -rf {} +
+            if [ -d public ]; then
+              find public -mindepth 1 -maxdepth 1 ! -name uploads -exec rm -rf {} +
+            fi
+          '
+
+      - name: Sync build to server
+        # tar over ssh instead of rsync: the server has no rsync binary and we
+        # cannot install packages there, but tar + ssh are always available.
+        run: |
+          tar -czf - -C .next/standalone . | \
+            ssh -i ~/.ssh/id_deploy -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "mkdir -p '${{ secrets.DEPLOY_PATH }}' && tar -xzf - -C '${{ secrets.DEPLOY_PATH }}'"
 
       - name: Restart app (Passenger)
         run: |
