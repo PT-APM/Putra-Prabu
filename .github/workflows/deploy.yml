@@ -1,0 +1,92 @@
+name: Deploy to Dewaweb
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Only one deploy at a time — a second push while one is running gets queued, not raced.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '20' # must match the Node.js version selected in cPanel "Setup Node.js App"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies (CI runner only, never on the server)
+        run: npm ci
+        # postinstall runs `prisma generate` automatically here
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Open SSH tunnel to production database
+        # The DB only listens on the server's localhost, so we forward it to the
+        # runner instead of exposing MySQL/MariaDB to the internet.
+        run: |
+          ssh -i ~/.ssh/id_deploy -p "${{ secrets.SSH_PORT }}" -f -N \
+            -L 13306:127.0.0.1:${{ secrets.DB_PORT }} \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}"
+          for i in $(seq 1 10); do
+            (echo > /dev/tcp/127.0.0.1/13306) >/dev/null 2>&1 && break
+            sleep 1
+          done
+
+      - name: Apply pending Prisma migrations
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@127.0.0.1:13306/${{ secrets.DB_NAME }}
+
+      - name: Build Next.js app
+        # app/page.tsx queries the DB with no dynamic API, so it is statically
+        # prerendered at build time — the tunnel must stay open for this step too.
+        run: npm run build
+        env:
+          DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@127.0.0.1:13306/${{ secrets.DB_NAME }}
+
+      - name: Close SSH tunnel
+        if: always()
+        run: |
+          pkill -f "13306:127.0.0.1:${{ secrets.DB_PORT }}" || true
+
+      - name: Assemble standalone bundle
+        run: |
+          cp -r public .next/standalone/public
+          mkdir -p .next/standalone/.next
+          cp -r .next/static .next/standalone/.next/static
+
+      - name: Sync build to server
+        # --delete keeps the server in sync with this build, but uploads and the
+        # Passenger tmp/ control folder are runtime data and must survive deploys.
+        run: |
+          rsync -az --delete \
+            --exclude 'public/uploads' \
+            --exclude 'tmp' \
+            -e "ssh -i ~/.ssh/id_deploy -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=yes" \
+            .next/standalone/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Restart app (Passenger)
+        run: |
+          ssh -i ~/.ssh/id_deploy -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" '
+            set -e
+            mkdir -p "${{ secrets.DEPLOY_PATH }}/public/uploads"
+            mkdir -p "${{ secrets.DEPLOY_PATH }}/tmp"
+            touch "${{ secrets.DEPLOY_PATH }}/tmp/restart.txt"
+          '
