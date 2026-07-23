@@ -18,6 +18,8 @@ model Admin {
   name         String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  @@map("admin")
 }
 
 model NewsArticle {
@@ -30,6 +32,8 @@ model NewsArticle {
   imageUrl  String   @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("newsarticle")
 }
 
 model Service {
@@ -41,6 +45,8 @@ model Service {
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("service")
 }
 
 model Leader {
@@ -52,6 +58,8 @@ model Leader {
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("leader")
 }
 
 model ContactInfo {
@@ -62,4 +70,6 @@ model ContactInfo {
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("contactinfo")
 }
