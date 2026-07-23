@@ -5,9 +5,9 @@ import LatestNewsPart from '@/sections/Home/LatestNewsPart';
 import MainLayout from '@/components/layout/MainLayout';
 
 
-export default function Home() {
-  const latestNews = repository.news.getLatest(3) ?? [];
-  const services = repository.services.getAll().slice(0, 3) ?? []; // Showing a subset for the bento grid
+export default async function Home() {
+  const latestNews = await repository.news.getLatest(3);
+  const services = (await repository.services.getAll()).slice(0, 3); // Showing a subset for the bento grid
 
   return (
     <MainLayout>

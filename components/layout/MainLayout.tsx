@@ -1,12 +1,14 @@
-"use client";
 import Header from './Header';
 import Footer from './Footer';
+import { repository } from '@/lib/repositories';
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-export default function MainLayout({ children } : MainLayoutProps) {
+export default async function MainLayout({ children } : MainLayoutProps) {
+  const contactInfo = await repository.contact.getAll();
+
   return (
     <div className="min-h-screen flex flex-col bg-background relative z-0">
       <div className="fixed inset-0 pointer-events-none bg-pattern z-[-1]"></div>
@@ -18,7 +20,7 @@ export default function MainLayout({ children } : MainLayoutProps) {
         {children}
       </main>
       
-      <Footer />
+      <Footer contactInfo={contactInfo} />
     </div>
   );
 }

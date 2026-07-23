@@ -3,6 +3,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { NewsArticle } from '@/types';
 import Image from "next/image";
+import Pagination from "./Pagination";
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -19,12 +20,16 @@ const staggerContainer = {
 };
 
 interface ArticlesPartProps {
-    featuredArticle : NewsArticle,
-    regularArticles : NewsArticle[]
-
+    articles: NewsArticle[],
+    page: number,
+    totalPages: number,
 }
 
-export default function ArticlesPart({featuredArticle, regularArticles} : ArticlesPartProps){
+export default function ArticlesPart({articles, page, totalPages} : ArticlesPartProps){
+    const showFeatured = page === 1 && articles.length > 0;
+    const featuredArticle = showFeatured ? articles[0] : undefined;
+    const regularArticles = showFeatured ? articles.slice(1) : articles;
+
     return <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-section-padding">
         <motion.section 
           initial="hidden"
@@ -70,6 +75,7 @@ export default function ArticlesPart({featuredArticle, regularArticles} : Articl
           )}
 
           {/* Secondary Articles */}
+          {showFeatured && (
           <div className="md:col-span-4 flex flex-col gap-gutter">
              {regularArticles.slice(0,1).map(article => (
               <motion.article variants={fadeIn} key={article.id} className="bg-surface-container-lowest rounded-3xl border border-outline-variant/30 overflow-hidden flex flex-col group h-full transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
@@ -94,9 +100,10 @@ export default function ArticlesPart({featuredArticle, regularArticles} : Articl
               </motion.article>
              ))}
           </div>
+          )}
 
           {/* Remaining Articles */}
-          {regularArticles.slice(1).map(article => (
+          {(showFeatured ? regularArticles.slice(1) : regularArticles).map(article => (
             <motion.article variants={fadeIn} key={article.id} className="md:col-span-4 bg-surface-container-lowest rounded-3xl border border-outline-variant/30 overflow-hidden flex flex-col group mt-4 md:mt-0 transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
               <Link href={`/news/${article.id}`} className="block h-full w-full flex flex-col">
                 <div className="h-48 w-full overflow-hidden relative">
@@ -120,17 +127,12 @@ export default function ArticlesPart({featuredArticle, regularArticles} : Articl
           ))}
         </motion.section>
 
-        {/* Pagination */}
-        <section className="flex justify-center items-center space-x-2 mt-8">
-          <button className="w-10 h-10 rounded-full border border-outline-variant/60 flex items-center justify-center text-secondary disabled:opacity-50 transition-colors shadow-sm bg-surface-container-lowest" disabled>
-            <span className="material-symbols-outlined">chevron_left</span>
-          </button>
-          <button className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-sm text-label-sm flex items-center justify-center shadow-md">1</button>
-          <button className="w-10 h-10 rounded-full border border-outline-variant/60 text-on-surface-variant font-label-sm text-label-sm flex items-center justify-center hover:bg-surface-variant transition-all shadow-sm bg-surface-container-lowest">2</button>
-          <span className="text-secondary px-2">...</span>
-          <button className="w-10 h-10 rounded-full border border-outline-variant/60 flex items-center justify-center text-secondary hover:text-primary hover:border-primary transition-all shadow-sm bg-surface-container-lowest hover:bg-surface-variant">
-            <span className="material-symbols-outlined">chevron_right</span>
-          </button>
-        </section>
+        {articles.length === 0 && (
+          <p className="text-center text-on-surface-variant py-16">
+            Belum ada berita yang dipublikasikan.
+          </p>
+        )}
+
+        <Pagination page={page} totalPages={totalPages} />
       </div>
 }

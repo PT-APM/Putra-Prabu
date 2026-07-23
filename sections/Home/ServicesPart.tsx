@@ -32,8 +32,8 @@ export default function ServicesPart({services} : ServicesProps){
           variants={fadeIn}
           className="text-center mb-16 space-y-4 pt-8"
         >
-          <h2 className="font-headline-lg text-headline-lg text-primary">Layanan Kami</h2>
-          <p className="font-body-md text-body-md text-secondary max-w-2xl mx-auto">Dedikasi kami meliputi berbagai sektor krusial untuk pemberdayaan umat dan kemajuan bangsa.</p>
+          <h2 className="font-headline-lg text-headline-lg text-primary">Bidang Kegiatan Kami</h2>
+          <p className="font-body-md text-body-md text-secondary max-w-2xl mx-auto">Yayasan Putra Prabu Indonesia Raya berikhtiar di berbagai bidang krusial untuk pemberdayaan umat dan kemajuan bangsa.</p>
         </motion.div>
         
         <motion.div 
@@ -83,8 +83,8 @@ export default function ServicesPart({services} : ServicesProps){
                 <div className="flex items-center gap-2 mb-3 bg-white/10 w-max p-2 rounded-full backdrop-blur-md border border-white/20 shadow-sm">
                   <span className="material-symbols-outlined text-on-primary">restaurant</span>
                 </div>
-                <h3 className="font-headline-lg-mobile text-headline-lg-mobile text-on-primary mb-2 drop-shadow-md">Layanan Katering</h3>
-                <p className="font-body-md text-body-md text-on-primary/90 text-sm drop-shadow-sm">Penyediaan makanan halal berkualitas untuk berbagai acara.</p>
+                <h3 className="font-headline-lg-mobile text-headline-lg-mobile text-on-primary mb-2 drop-shadow-md">Boga & Kepedulian Umat</h3>
+                <p className="font-body-md text-body-md text-on-primary/90 text-sm drop-shadow-sm">Penyediaan makanan halal berkualitas sebagai wujud kepedulian kepada umat.</p>
               </div>
             </Link>
           </motion.div>

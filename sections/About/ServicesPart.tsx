@@ -33,8 +33,8 @@ export default function ServicesPart({services} : ServicesPartProps){
             variants={fadeIn}
             className="mb-14 text-center"
           >
-            <h2 className="font-headline-lg text-headline-lg text-primary mb-4">Layanan & Unit Usaha</h2>
-            <p className="font-body-md text-body-md text-secondary">Menyelenggarakan pendidikan berkualitas dan layanan profesional di Jl sejahtera no 21, Medan.</p>
+            <h2 className="font-headline-lg text-headline-lg text-primary mb-4">Bidang Kegiatan Yayasan</h2>
+            <p className="font-body-md text-body-md text-secondary">Berikhtiar menyelenggarakan pendidikan berkualitas dan pemberdayaan umat melalui berbagai bidang kegiatan.</p>
           </motion.div>
           
           <motion.div 

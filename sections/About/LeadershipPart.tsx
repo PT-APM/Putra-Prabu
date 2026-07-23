@@ -23,10 +23,6 @@ interface LeadershipPartProps {
   pengurusHarian: Leader[];
 }
 
-const imageMap = (imgName: string) => {
-  return `/img/leadership/${imgName}`;
-};
-
 export default function LeadershipPart({
   pembina,
   pengawas,
@@ -61,7 +57,6 @@ export default function LeadershipPart({
           className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto"
         >
           {[pembina, pengawas].map((leader) => {
-            const imagePath = imageMap(leader.imageUrl);
             return (
               leader && (
                 <motion.div
@@ -74,7 +69,7 @@ export default function LeadershipPart({
                     <Image
                       width={200}
                       height={200}
-                      src={imagePath}
+                      src={leader.imageUrl}
                       loading="eager"
                       alt={leader.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -108,7 +103,6 @@ export default function LeadershipPart({
           className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
         >
           {pengurusHarian.map((leader) => {
-            const imagePath = imageMap(leader.imageUrl);
             return (
               <motion.div
                 variants={fadeIn}
@@ -120,7 +114,7 @@ export default function LeadershipPart({
                   <Image
                     width={200}
                     height={200}
-                    src={imagePath}
+                    src={leader.imageUrl}
                     loading="eager"
                     alt={leader.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

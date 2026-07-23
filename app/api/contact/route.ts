@@ -56,10 +56,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'Pesan berhasil dikirim!' }, { status: 200 });
     
-  } catch (error) {
+  } catch (error : any) {
     console.error('Error sending email:', error);
     return NextResponse.json(
-      { error: 'Terjadi kesalahan saat mengirim pesan.' },
+      { error: error.message  },
       { status: 500 }
     );
   }

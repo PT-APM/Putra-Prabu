@@ -5,11 +5,15 @@ import LeadershipPart from '@/sections/About/LeadershipPart';
 import ServicesPart from '@/sections/About/ServicesPart';
 
 
-export default function About() {
-  const services = repository.services.getAll();
-  const pembina = repository.leadership.getByGroup('Pembina')[0];
-  const pengawas = repository.leadership.getByGroup('Pengawas')[0];
-  const pengurusHarian = repository.leadership.getByGroup('Pengurus Harian');
+export default async function About() {
+  const services = await repository.services.getAll();
+  const [pembinaList, pengawasList, pengurusHarian] = await Promise.all([
+    repository.leadership.getByGroup('Pembina'),
+    repository.leadership.getByGroup('Pengawas'),
+    repository.leadership.getByGroup('Pengurus Harian'),
+  ]);
+  const pembina = pembinaList[0];
+  const pengawas = pengawasList[0];
 
   return (
     <MainLayout>

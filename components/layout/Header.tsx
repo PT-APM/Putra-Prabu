@@ -14,10 +14,10 @@ export default function Header() {
   const pathname = usePathname();
   
   const navLinks: NavLink[] = [
-    { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
-    { name: 'News', path: '/news' },
-    { name: 'Contact Us', path: '/contact' },
+    { name: 'Beranda', path: '/' },
+    { name: 'Tentang Kami', path: '/about' },
+    { name: 'Berita', path: '/news' },
+    { name: 'Kontak Kami', path: '/contact' },
   ];
 
   return (

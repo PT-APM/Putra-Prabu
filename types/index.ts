@@ -23,3 +23,10 @@ export interface Leader {
   group: 'Pembina' | 'Pengawas' | 'Pengurus Harian';
   imageUrl: string;
 }
+
+export interface ContactInfo {
+  id: string;
+  icon: string;
+  label: string;
+  value: string;
+}
