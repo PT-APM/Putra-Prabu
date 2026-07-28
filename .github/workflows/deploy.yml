@@ -52,14 +52,14 @@ jobs:
       - name: Apply pending Prisma migrations
         run: npx prisma migrate deploy
         env:
-          DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@127.0.0.1:13306/${{ secrets.DB_NAME }}
+          DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST}}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
 
       - name: Build Next.js app
         # app/page.tsx queries the DB with no dynamic API, so it is statically
         # prerendered at build time — the tunnel must stay open for this step too.
         run: npm run build
         env:
-          DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@127.0.0.1:13306/${{ secrets.DB_NAME }}
+          DATABASE_URL: mysql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST}}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
 
       - name: Close SSH tunnel
         if: always()
