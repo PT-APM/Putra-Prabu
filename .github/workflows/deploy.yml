@@ -66,6 +66,7 @@ jobs:
         run: |
           pkill -f "13306:127.0.0.1:${{ secrets.DB_PORT }}" || true
 
+
       - name: Assemble standalone bundle
         run: |
           cp -r public .next/standalone/public
