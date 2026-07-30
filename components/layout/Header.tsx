@@ -39,7 +39,7 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           <Link href="/" className="hover:opacity-95 transition-opacity">
-            <Logo variant="horizontal" iconSize={44} />
+            <Logo variant="horizontal" iconSize={44} useImageIcon />
           </Link>
         </div>
 

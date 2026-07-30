@@ -1,8 +1,12 @@
 "use client";
+import Image from 'next/image';
+import appleIcon from '@/app/apple-icon.png';
+
 interface LogoProps {
   variant?: 'horizontal' | 'vertical' | 'icon-only';
   className?: string;
   iconSize?: number;
+  useImageIcon?: boolean;
 }
 
 interface EmblemProps {
@@ -81,13 +85,26 @@ const Emblem = ({iconSize} : EmblemProps) => (
 );
 
 
-export default function Logo({ variant = 'horizontal', className = '', iconSize = 48 }: LogoProps) {
-  // SVG emblem of the logo
+export default function Logo({ variant = 'horizontal', className = '', iconSize = 48, useImageIcon = false }: LogoProps) {
+  // SVG emblem of the logo, or the apple-icon.png artwork when useImageIcon is set
+
+  const icon = useImageIcon ? (
+    <Image
+      src={appleIcon}
+      alt="Logo Yayasan Putra Prabu Indonesia Raya"
+      width={iconSize}
+      height={iconSize}
+      className="shrink-0 transition-transform duration-300 group-hover:scale-105"
+      priority
+    />
+  ) : (
+    <Emblem iconSize={iconSize}/>
+  );
 
   if (variant === 'icon-only') {
     return (
       <div className={`inline-flex items-center justify-center ${className}`}>
-        <Emblem iconSize={iconSize}/>
+        {icon}
       </div>
     );
   }
@@ -95,7 +112,7 @@ export default function Logo({ variant = 'horizontal', className = '', iconSize 
   if (variant === 'vertical') {
     return (
       <div className={`flex flex-col items-center text-center group ${className}`}>
-        <Emblem iconSize={iconSize}/>
+        {icon}
         <div className="mt-4">
           <h1 className="font-sans font-bold text-primary tracking-wide leading-tight text-lg md:text-xl">
             YAYASAN PUTRA PRABU
@@ -111,7 +128,7 @@ export default function Logo({ variant = 'horizontal', className = '', iconSize 
   // Default: Horizontal layout
   return (
     <div className={`flex items-center gap-3.5 group cursor-pointer ${className}`}>
-      <Emblem iconSize={iconSize}/>
+      {icon}
       <div className="flex flex-col justify-center">
         <h1 className="font-sans font-extrabold text-primary tracking-wide leading-none text-sm md:text-base">
           YAYASAN PUTRA PRABU
