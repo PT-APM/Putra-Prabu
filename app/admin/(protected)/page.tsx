@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { getAdminLocale } from "@/lib/i18n/adminLocale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 export default async function AdminDashboardPage() {
+  const locale = await getAdminLocale();
+  const dict = getDictionary(locale);
+
   const [newsCount, serviceCount, leaderCount, contactCount] = await Promise.all([
     prisma.newsArticle.count(),
     prisma.service.count(),
@@ -10,15 +15,15 @@ export default async function AdminDashboardPage() {
   ]);
 
   const cards = [
-    { label: "Berita", count: newsCount, href: "/admin/news", icon: "newspaper" },
-    { label: "Layanan", count: serviceCount, href: "/admin/services", icon: "volunteer_activism" },
-    { label: "Kepengurusan", count: leaderCount, href: "/admin/leadership", icon: "groups" },
-    { label: "Info Kontak", count: contactCount, href: "/admin/contact", icon: "contact_page" },
+    { label: dict.admin.sidebar.news, count: newsCount, href: "/admin/news", icon: "newspaper" },
+    { label: dict.admin.sidebar.services, count: serviceCount, href: "/admin/services", icon: "volunteer_activism" },
+    { label: dict.admin.sidebar.leadership, count: leaderCount, href: "/admin/leadership", icon: "groups" },
+    { label: dict.admin.sidebar.contact, count: contactCount, href: "/admin/contact", icon: "contact_page" },
   ];
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-primary mb-6">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-primary mb-6">{dict.admin.dashboard.title}</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((card) => (
           <Link

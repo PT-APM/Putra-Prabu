@@ -5,41 +5,57 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { verifySession } from "@/lib/auth/dal";
 import { saveUploadedImage, deleteUploadedImage } from "@/lib/upload";
+import { getAdminLocale } from "@/lib/i18n/adminLocale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { revalidateLocalizedPath } from "@/lib/i18n/revalidate";
 
-function parseNewsFields(formData: FormData) {
-  const title = String(formData.get("title") || "").trim();
-  const summary = String(formData.get("summary") || "").trim();
-  const content = String(formData.get("content") || "").trim();
-  const category = String(formData.get("category") || "").trim();
+function trimmed(formData: FormData, name: string) {
+  return String(formData.get(name) || "").trim();
+}
+
+async function parseNewsFields(formData: FormData) {
+  const titleId = trimmed(formData, "titleId");
+  const summaryId = trimmed(formData, "summaryId");
+  const categoryId = trimmed(formData, "categoryId");
   const dateValue = String(formData.get("date") || "");
 
-  if (!title || !summary || !category || !dateValue) {
-    throw new Error("Semua field wajib diisi kecuali konten lengkap.");
+  if (!titleId || !summaryId || !categoryId || !dateValue) {
+    const dict = getDictionary(await getAdminLocale());
+    throw new Error(dict.admin.news.errorRequired);
   }
 
   return {
-    title,
-    summary,
-    content: content || null,
-    category,
+    titleId,
+    titleEn: trimmed(formData, "titleEn") || null,
+    titleAr: trimmed(formData, "titleAr") || null,
+    summaryId,
+    summaryEn: trimmed(formData, "summaryEn") || null,
+    summaryAr: trimmed(formData, "summaryAr") || null,
+    contentId: trimmed(formData, "contentId") || null,
+    contentEn: trimmed(formData, "contentEn") || null,
+    contentAr: trimmed(formData, "contentAr") || null,
+    categoryId,
+    categoryEn: trimmed(formData, "categoryEn") || null,
+    categoryAr: trimmed(formData, "categoryAr") || null,
     date: new Date(dateValue),
   };
 }
 
 function revalidateNewsPaths(id?: string) {
   revalidatePath("/admin/news");
-  revalidatePath("/news");
-  revalidatePath("/");
-  if (id) revalidatePath(`/news/${id}`);
+  revalidateLocalizedPath("/");
+  revalidateLocalizedPath("/news");
+  if (id) revalidateLocalizedPath(`/news/${id}`);
 }
 
 export async function createNews(formData: FormData) {
   await verifySession();
-  const fields = parseNewsFields(formData);
+  const fields = await parseNewsFields(formData);
 
   const image = formData.get("image");
   if (!(image instanceof File) || image.size === 0) {
-    throw new Error("Gambar wajib diunggah.");
+    const dict = getDictionary(await getAdminLocale());
+    throw new Error(dict.admin.news.errorImage);
   }
   const imageUrl = await saveUploadedImage(image, "news");
 
@@ -50,7 +66,7 @@ export async function createNews(formData: FormData) {
 
 export async function updateNews(id: string, formData: FormData) {
   await verifySession();
-  const fields = parseNewsFields(formData);
+  const fields = await parseNewsFields(formData);
   const existing = await prisma.newsArticle.findUniqueOrThrow({ where: { id } });
 
   let imageUrl = existing.imageUrl;

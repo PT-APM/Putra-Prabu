@@ -1,8 +1,9 @@
 "use client"
-import { repository } from '@/lib/repositories';
 import { Service } from '@/types';
 import { motion } from 'motion/react';
 import Image from 'next/image';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/config';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -21,23 +22,25 @@ const staggerContainer = {
 
 interface ServicesPartProps {
   services : Service[]
+  locale: Locale
 }
 
-export default function ServicesPart({services} : ServicesPartProps){
+export default function ServicesPart({services, locale} : ServicesPartProps){
+    const dict = getDictionary(locale);
     return <section className="section-gradient border-t border-outline-variant/30">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-section-padding">
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeIn}
             className="mb-14 text-center"
           >
-            <h2 className="font-headline-lg text-headline-lg text-primary mb-4">Bidang Kegiatan Yayasan</h2>
-            <p className="font-body-md text-body-md text-secondary">Berikhtiar menyelenggarakan pendidikan berkualitas dan pemberdayaan umat melalui berbagai bidang kegiatan.</p>
+            <h2 className="font-headline-lg text-headline-lg text-primary mb-4">{dict.about.services.heading}</h2>
+            <p className="font-body-md text-body-md text-secondary">{dict.about.services.intro}</p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}

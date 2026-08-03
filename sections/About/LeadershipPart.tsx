@@ -2,6 +2,9 @@
 import { motion } from "motion/react";
 import { Leader } from "@/types";
 import Image from "next/image";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
+
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -21,13 +24,18 @@ interface LeadershipPartProps {
   pembina: Leader;
   pengawas: Leader;
   pengurusHarian: Leader[];
+  locale: Locale;
 }
 
 export default function LeadershipPart({
   pembina,
   pengawas,
   pengurusHarian,
+  locale,
 }: LeadershipPartProps) {
+  const dict = getDictionary(locale);
+  const groupLabel = (group: Leader["group"]) => dict.leadershipGroups[group];
+
   return (
     <section className="section-gradient-reverse border-t border-outline-variant/30 relative">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDQ1MjgiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0di00aC0ydjRoLTR2Mmg0djRoMnYtNGg0di0yaC00em0wLTMwVjBoLTJ2NGgtNHYyaDR2NGgyVjZoNFY0aC00ek02IDM0di00SDR2NEgwdjJoNHY0aDJ2LTRoNHYtMkg2ek02IDRWMEg0djRIMHYyaDR2NGgyVjZoNFY0SDZ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50 pointer-events-none"></div>
@@ -40,11 +48,10 @@ export default function LeadershipPart({
           className="mb-16 text-center"
         >
           <h2 className="font-headline-lg text-headline-lg text-primary mb-4">
-            Struktur Kepemimpinan
+            {dict.about.leadership.heading}
           </h2>
           <p className="font-body-md text-body-md text-secondary max-w-2xl mx-auto">
-            Tokoh-tokoh berdedikasi yang mengarahkan Yayasan Putra Prabu
-            Indonesia Raya dengan amanah dan profesionalisme.
+            {dict.about.leadership.intro}
           </p>
         </motion.div>
 
@@ -74,9 +81,9 @@ export default function LeadershipPart({
                       alt={leader.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute top-4 left-4 z-20">
+                    <div className="absolute top-4 start-4 z-20">
                       <span className="inline-block px-4 py-1.5 bg-surface-container-lowest/90 backdrop-blur-md text-primary rounded-full font-label-sm text-label-sm shadow-sm border border-outline-variant/20">
-                        Dewan {leader.group}
+                        {dict.about.leadership.boardPrefix} {groupLabel(leader.group)}
                       </span>
                     </div>
                   </div>
@@ -119,9 +126,9 @@ export default function LeadershipPart({
                     alt={leader.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute top-4 left-4 z-20">
+                  <div className="absolute top-4 start-4 z-20">
                     <span className="inline-block px-4 py-1.5 bg-surface-container-lowest/90 backdrop-blur-md text-primary rounded-full font-label-sm text-label-sm shadow-sm border border-outline-variant/20">
-                      {leader.group}
+                      {groupLabel(leader.group)}
                     </span>
                   </div>
                 </div>

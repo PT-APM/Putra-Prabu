@@ -1,9 +1,13 @@
 "use client"
-import Link from "next/link";
 import { motion } from "motion/react";
 import { NewsArticle } from '@/types';
 import Image from "next/image";
 import Pagination from "./Pagination";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localeHref } from "@/lib/i18n/path";
+import Link from "next/link";
+import type { Locale } from "@/lib/i18n/config";
+
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -23,27 +27,30 @@ interface ArticlesPartProps {
     articles: NewsArticle[],
     page: number,
     totalPages: number,
+    locale: Locale,
 }
 
-export default function ArticlesPart({articles, page, totalPages} : ArticlesPartProps){
+export default function ArticlesPart({articles, page, totalPages, locale} : ArticlesPartProps){
+    const dict = getDictionary(locale);
     const showFeatured = page === 1 && articles.length > 0;
     const featuredArticle = showFeatured ? articles[0] : undefined;
     const regularArticles = showFeatured ? articles.slice(1) : articles;
+    const newsHref = (id: string) => localeHref(locale, `/news/${id}`);
 
     return <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-section-padding">
-        <motion.section 
+        <motion.section
           initial="hidden"
           animate="visible"
           variants={fadeIn}
           className="mb-16 text-center max-w-3xl mx-auto"
         >
-          <h1 className="font-display-lg text-display-lg text-primary mb-6 drop-shadow-sm">Berita & Artikel</h1>
+          <h1 className="font-display-lg text-display-lg text-primary mb-6 drop-shadow-sm">{dict.news.heading}</h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Menyajikan informasi terkini mengenai kegiatan yayasan, perkembangan pendidikan Islam, kesejahteraan umat, serta inovasi teknologi yang selaras dengan nilai-nilai luhur.
+            {dict.news.intro}
           </p>
         </motion.section>
 
-        <motion.section 
+        <motion.section
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
@@ -53,11 +60,11 @@ export default function ArticlesPart({articles, page, totalPages} : ArticlesPart
           {/* Featured Article */}
           {featuredArticle && (
             <motion.article variants={fadeIn} className="md:col-span-8 bg-surface-container-lowest rounded-3xl border border-outline-variant/30 overflow-hidden flex flex-col relative group transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-              <Link href={`/news/${featuredArticle.id}`} className="block h-full w-full flex flex-col">
+              <Link href={newsHref(featuredArticle.id)} className="block h-full w-full flex flex-col">
                 <div className="h-80 w-full overflow-hidden relative">
                   <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300 z-10"></div>
                   <Image width={100} height={100} src={featuredArticle.imageUrl} alt={featuredArticle.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute top-4 left-4 bg-primary text-on-primary px-4 py-1.5 rounded-full font-label-sm text-label-sm shadow-md z-20">{featuredArticle.category}</div>
+                  <div className="absolute top-4 start-4 bg-primary text-on-primary px-4 py-1.5 rounded-full font-label-sm text-label-sm shadow-md z-20">{featuredArticle.category}</div>
                 </div>
                 <div className="p-8 flex flex-col flex-grow justify-between relative z-20">
                   <div>
@@ -66,8 +73,8 @@ export default function ArticlesPart({articles, page, totalPages} : ArticlesPart
                     <p className="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">{featuredArticle.summary}</p>
                   </div>
                   <span className="inline-flex items-center text-primary font-label-sm text-label-sm mt-auto group-hover:gap-2 transition-all">
-                    Baca Selengkapnya
-                    <span className="material-symbols-outlined ml-1 text-[16px]">arrow_forward</span>
+                    {dict.news.readMore}
+                    <span className="material-symbols-outlined ms-1 text-[16px] rtl:-scale-x-100">arrow_forward</span>
                   </span>
                 </div>
               </Link>
@@ -79,11 +86,11 @@ export default function ArticlesPart({articles, page, totalPages} : ArticlesPart
           <div className="md:col-span-4 flex flex-col gap-gutter">
              {regularArticles.slice(0,1).map(article => (
               <motion.article variants={fadeIn} key={article.id} className="bg-surface-container-lowest rounded-3xl border border-outline-variant/30 overflow-hidden flex flex-col group h-full transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-                <Link href={`/news/${article.id}`} className="block h-full w-full flex flex-col">
+                <Link href={newsHref(article.id)} className="block h-full w-full flex flex-col">
                   <div className="h-48 w-full overflow-hidden relative">
                     <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300 z-10"></div>
                     <Image width={100} height={100} src={article.imageUrl} alt={article.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                    <div className="absolute top-4 left-4 bg-secondary text-on-primary px-3 py-1.5 rounded-full font-label-sm text-label-sm shadow-sm z-20">{article.category}</div>
+                    <div className="absolute top-4 start-4 bg-secondary text-on-primary px-3 py-1.5 rounded-full font-label-sm text-label-sm shadow-sm z-20">{article.category}</div>
                   </div>
                   <div className="p-6 flex flex-col flex-grow justify-between relative z-20">
                     <div>
@@ -92,8 +99,8 @@ export default function ArticlesPart({articles, page, totalPages} : ArticlesPart
                       <p className="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-3">{article.summary}</p>
                     </div>
                     <span className="inline-flex items-center text-primary font-label-sm text-label-sm mt-auto group-hover:gap-2 transition-all">
-                      Baca Selengkapnya
-                      <span className="material-symbols-outlined ml-1 text-[16px]">arrow_forward</span>
+                      {dict.news.readMore}
+                      <span className="material-symbols-outlined ms-1 text-[16px] rtl:-scale-x-100">arrow_forward</span>
                     </span>
                   </div>
                 </Link>
@@ -105,11 +112,11 @@ export default function ArticlesPart({articles, page, totalPages} : ArticlesPart
           {/* Remaining Articles */}
           {(showFeatured ? regularArticles.slice(1) : regularArticles).map(article => (
             <motion.article variants={fadeIn} key={article.id} className="md:col-span-4 bg-surface-container-lowest rounded-3xl border border-outline-variant/30 overflow-hidden flex flex-col group mt-4 md:mt-0 transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-              <Link href={`/news/${article.id}`} className="block h-full w-full flex flex-col">
+              <Link href={newsHref(article.id)} className="block h-full w-full flex flex-col">
                 <div className="h-48 w-full overflow-hidden relative">
                   <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300 z-10"></div>
                   <Image width={100} height={100} src={article.imageUrl} alt={article.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute top-4 left-4 bg-tertiary text-on-primary px-3 py-1.5 rounded-full font-label-sm text-label-sm shadow-sm z-20">{article.category}</div>
+                  <div className="absolute top-4 start-4 bg-tertiary text-on-primary px-3 py-1.5 rounded-full font-label-sm text-label-sm shadow-sm z-20">{article.category}</div>
                 </div>
                 <div className="p-6 flex flex-col flex-grow justify-between relative z-20">
                   <div>
@@ -118,8 +125,8 @@ export default function ArticlesPart({articles, page, totalPages} : ArticlesPart
                     <p className="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-3">{article.summary}</p>
                   </div>
                   <span className="inline-flex items-center text-primary font-label-sm text-label-sm mt-auto group-hover:gap-2 transition-all">
-                    Baca Selengkapnya
-                    <span className="material-symbols-outlined ml-1 text-[16px]">arrow_forward</span>
+                    {dict.news.readMore}
+                    <span className="material-symbols-outlined ms-1 text-[16px] rtl:-scale-x-100">arrow_forward</span>
                   </span>
                 </div>
               </Link>
@@ -129,10 +136,10 @@ export default function ArticlesPart({articles, page, totalPages} : ArticlesPart
 
         {articles.length === 0 && (
           <p className="text-center text-on-surface-variant py-16">
-            Belum ada berita yang dipublikasikan.
+            {dict.news.empty}
           </p>
         )}
 
-        <Pagination page={page} totalPages={totalPages} />
+        <Pagination page={page} totalPages={totalPages} locale={locale} />
       </div>
 }

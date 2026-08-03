@@ -4,31 +4,46 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { verifySession } from "@/lib/auth/dal";
+import { getAdminLocale } from "@/lib/i18n/adminLocale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { revalidateLocalizedPath } from "@/lib/i18n/revalidate";
 
-function parseContactForm(formData: FormData) {
-  const icon = String(formData.get("icon") || "").trim();
-  const label = String(formData.get("label") || "").trim();
-  const value = String(formData.get("value") || "").trim();
+function trimmed(formData: FormData, name: string) {
+  return String(formData.get(name) || "").trim();
+}
+
+async function parseContactForm(formData: FormData) {
+  const icon = trimmed(formData, "icon");
+  const labelId = trimmed(formData, "labelId");
+  const value = trimmed(formData, "value");
   const order = Number(formData.get("order") || 0);
 
-  if (!icon || !label || !value) {
-    throw new Error("Ikon, label, dan nilai wajib diisi.");
+  if (!icon || !labelId || !value) {
+    const dict = getDictionary(await getAdminLocale());
+    throw new Error(dict.admin.contact.errorRequired);
   }
 
-  return { icon, label, value, order: Number.isFinite(order) ? order : 0 };
+  return {
+    icon,
+    labelId,
+    labelEn: trimmed(formData, "labelEn") || null,
+    labelAr: trimmed(formData, "labelAr") || null,
+    value,
+    order: Number.isFinite(order) ? order : 0,
+  };
 }
 
 function revalidateContactPaths() {
   revalidatePath("/admin/contact");
-  revalidatePath("/contact");
-  revalidatePath("/");
-  revalidatePath("/about");
-  revalidatePath("/news");
+  revalidateLocalizedPath("/");
+  revalidateLocalizedPath("/about");
+  revalidateLocalizedPath("/contact");
+  revalidateLocalizedPath("/news");
 }
 
 export async function createContactInfo(formData: FormData) {
   await verifySession();
-  const data = parseContactForm(formData);
+  const data = await parseContactForm(formData);
   await prisma.contactInfo.create({ data });
   revalidateContactPaths();
   redirect("/admin/contact");
@@ -36,7 +51,7 @@ export async function createContactInfo(formData: FormData) {
 
 export async function updateContactInfo(id: string, formData: FormData) {
   await verifySession();
-  const data = parseContactForm(formData);
+  const data = await parseContactForm(formData);
   await prisma.contactInfo.update({ where: { id }, data });
   revalidateContactPaths();
   redirect("/admin/contact");

@@ -1,5 +1,8 @@
 "use client";
 import { motion } from "motion/react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
+
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -14,7 +17,8 @@ const staggerContainer = {
     },
   },
 };
-export default function HeroPart() {
+export default function HeroPart({ locale }: { locale: Locale }) {
+  const dict = getDictionary(locale);
   return (
     <section className="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-16 md:py-24 text-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent -z-10 rounded-3xl blur-3xl opacity-50"></div>
@@ -27,15 +31,13 @@ export default function HeroPart() {
           variants={fadeIn}
           className="font-display-lg text-display-lg text-primary mb-6"
         >
-          Membangun Masa Depan Umat
+          {dict.about.hero.title}
         </motion.h1>
         <motion.p
           variants={fadeIn}
           className="font-body-md text-body-md text-secondary max-w-2xl mx-auto"
         >
-          Berdedikasi dalam pendidikan, penelitian, dan pelayanan masyarakat
-          dengan landasan nilai-nilai Islam yang kokoh dan integritas yang
-          tinggi.
+          {dict.about.hero.description}
         </motion.p>
       </motion.div>
     </section>

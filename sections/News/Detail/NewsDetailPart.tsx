@@ -3,6 +3,9 @@ import { NewsArticle } from '@/types';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { localeHref } from '@/lib/i18n/path';
+import type { Locale } from '@/lib/i18n/config';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -22,18 +25,20 @@ const staggerContainer = {
 interface NewsDetailPartProps {
     article : NewsArticle,
     relatedNews : NewsArticle[],
-    paragraphs : string[]
+    paragraphs : string[],
+    locale: Locale,
 }
 
-export default function NewsDetailPart({article, relatedNews, paragraphs} : NewsDetailPartProps){
+export default function NewsDetailPart({article, relatedNews, paragraphs, locale} : NewsDetailPartProps){
+      const dict = getDictionary(locale);
       return (
-    <motion.div 
+    <motion.div
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
       className="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-section-padding w-full"
     >
-      
+
       {/* Article Header */}
       <motion.header variants={fadeIn} className="max-w-3xl mx-auto mb-12 text-center">
         <div className="flex items-center justify-center space-x-4 mb-6">
@@ -53,7 +58,7 @@ export default function NewsDetailPart({article, relatedNews, paragraphs} : News
 
       {/* Layout Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        
+
         {/* Article Body */}
         <motion.article variants={fadeIn} className="lg:col-span-8 prose prose-lg prose-slate prose-headings:font-display-lg prose-headings:text-primary max-w-none prose-a:text-primary hover:prose-a:text-primary-container prose-img:rounded-3xl">
           {paragraphs.map((para, index) => {
@@ -68,7 +73,7 @@ export default function NewsDetailPart({article, relatedNews, paragraphs} : News
             if (para.startsWith('"') && para.endsWith('"')) {
               return (
                 <div key={index} className="bg-surface-container-low border border-outline-variant p-8 rounded-2xl my-10 geometric-bg relative overflow-hidden shadow-sm">
-                  <span className="material-symbols-outlined text-4xl text-primary opacity-20 absolute top-4 right-4">format_quote</span>
+                  <span className="material-symbols-outlined text-4xl text-primary opacity-20 absolute top-4 end-4">format_quote</span>
                   <p className="text-xl italic text-on-surface-variant relative z-10 m-0">{para}</p>
                 </div>
               );
@@ -78,7 +83,7 @@ export default function NewsDetailPart({article, relatedNews, paragraphs} : News
 
           {/* Share Section */}
           <div className="flex items-center space-x-6 border-t border-outline-variant pt-8 mt-12">
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Bagikan Artikel Ini:</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">{dict.news.share}</span>
             <div className="flex space-x-4">
               <button className="w-10 h-10 rounded-full border border-outline-variant/60 flex items-center justify-center text-secondary hover:text-primary hover:border-primary transition-all bg-surface-container-lowest shadow-sm hover:shadow-md active:scale-95">
                 <span className="material-symbols-outlined">share</span>
@@ -93,10 +98,10 @@ export default function NewsDetailPart({article, relatedNews, paragraphs} : News
         {/* Sidebar / Related News */}
         <aside className="lg:col-span-4">
           <motion.div variants={fadeIn} className="sticky top-28 bg-surface-container-lowest border border-outline-variant/40 rounded-3xl p-8 shadow-[0_4px_20px_rgb(0,0,0,0.04)]">
-            <h3 className="font-headline-lg-mobile text-headline-lg-mobile text-primary border-b border-outline-variant/50 pb-4 mb-6">Berita Terkait</h3>
+            <h3 className="font-headline-lg-mobile text-headline-lg-mobile text-primary border-b border-outline-variant/50 pb-4 mb-6">{dict.news.related}</h3>
             <div className="space-y-6">
               {relatedNews.map(news => (
-                <Link href={`/news/${news.id}`} key={news.id} className="group block">
+                <Link href={localeHref(locale, `/news/${news.id}`)} key={news.id} className="group block">
                   <article className="flex gap-4">
                     <div className="w-24 h-24 shrink-0 rounded-xl bg-surface-variant overflow-hidden relative">
                       <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300 z-10"></div>

@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localeHref } from "@/lib/i18n/path";
+import type { Locale } from "@/lib/i18n/config";
 
 interface PaginationProps {
   page: number;
   totalPages: number;
+  locale: Locale;
 }
 
 type PageItem = number | "ellipsis";
@@ -26,26 +30,28 @@ function getPageWindow(page: number, totalPages: number): PageItem[] {
 const arrowButtonClass =
   "w-10 h-10 rounded-full border border-outline-variant/60 flex items-center justify-center transition-colors shadow-sm bg-surface-container-lowest";
 
-export default function Pagination({ page, totalPages }: PaginationProps) {
+export default function Pagination({ page, totalPages, locale }: PaginationProps) {
   if (totalPages <= 1) return null;
 
+  const dict = getDictionary(locale);
   const pages = getPageWindow(page, totalPages);
   const prevPage = page - 1;
   const nextPage = page + 1;
+  const pageHref = (p: number) => localeHref(locale, `/news?page=${p}`);
 
   return (
     <section className="flex justify-center items-center space-x-2 mt-8">
       {prevPage >= 1 ? (
         <Link
-          href={`/news?page=${prevPage}`}
+          href={pageHref(prevPage)}
           className={`${arrowButtonClass} text-secondary hover:text-primary hover:border-primary`}
-          aria-label="Halaman sebelumnya"
+          aria-label={dict.news.pagination.prev}
         >
-          <span className="material-symbols-outlined">chevron_left</span>
+          <span className="material-symbols-outlined rtl:-scale-x-100">chevron_left</span>
         </Link>
       ) : (
         <span className={`${arrowButtonClass} text-secondary opacity-50`}>
-          <span className="material-symbols-outlined">chevron_left</span>
+          <span className="material-symbols-outlined rtl:-scale-x-100">chevron_left</span>
         </span>
       )}
 
@@ -64,7 +70,7 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
         ) : (
           <Link
             key={item}
-            href={`/news?page=${item}`}
+            href={pageHref(item)}
             className="w-10 h-10 rounded-full border border-outline-variant/60 text-on-surface-variant font-label-sm text-label-sm flex items-center justify-center hover:bg-surface-variant transition-all shadow-sm bg-surface-container-lowest"
           >
             {item}
@@ -74,15 +80,15 @@ export default function Pagination({ page, totalPages }: PaginationProps) {
 
       {nextPage <= totalPages ? (
         <Link
-          href={`/news?page=${nextPage}`}
+          href={pageHref(nextPage)}
           className={`${arrowButtonClass} text-secondary hover:text-primary hover:border-primary`}
-          aria-label="Halaman berikutnya"
+          aria-label={dict.news.pagination.next}
         >
-          <span className="material-symbols-outlined">chevron_right</span>
+          <span className="material-symbols-outlined rtl:-scale-x-100">chevron_right</span>
         </Link>
       ) : (
         <span className={`${arrowButtonClass} text-secondary opacity-50`}>
-          <span className="material-symbols-outlined">chevron_right</span>
+          <span className="material-symbols-outlined rtl:-scale-x-100">chevron_right</span>
         </span>
       )}
     </section>

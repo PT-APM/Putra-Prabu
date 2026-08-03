@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -17,7 +19,10 @@ const staggerContainer = {
   },
 };
 
-export default function PimpinanPonpesPart() {
+export default function PimpinanPonpesPart({ locale }: { locale: Locale }) {
+  const dict = getDictionary(locale);
+  const [firstPerson, secondPerson] = dict.about.pimpinanPonpes.people;
+
   return (
     <section className="section-gradient border-t border-outline-variant/30 relative overflow-hidden">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-section-padding relative z-10">
@@ -29,11 +34,10 @@ export default function PimpinanPonpesPart() {
           className="mb-16 text-center"
         >
           <h2 className="font-headline-lg text-headline-lg text-primary mb-4">
-            Pimpinan Pondok Pesantren
+            {dict.about.pimpinanPonpes.heading}
           </h2>
           <p className="font-body-md text-body-md text-secondary max-w-2xl mx-auto">
-            Sosok teladan yang membimbing santri dan mengawal syiar dakwah
-            Pondok Pesantren Yayasan Putra Prabu Indonesia Raya.
+            {dict.about.pimpinanPonpes.intro}
           </p>
         </motion.div>
 
@@ -64,20 +68,20 @@ export default function PimpinanPonpesPart() {
             variants={fadeIn}
             className="grid grid-cols-2 gap-4 mt-10"
           >
-            <div className="text-center md:text-left px-2">
+            <div className="text-center md:text-start px-2">
               <h3 className="font-headline-lg text-[20px] leading-[28px] text-primary mb-2">
-                Abu Kuta Krueng
+                {firstPerson.name}
               </h3>
               <p className="font-label-sm text-label-sm text-secondary uppercase tracking-widest">
-                Pimpinan Pondok Pesantren (Alm.)
+                {firstPerson.role}
               </p>
             </div>
-            <div className="text-center md:text-right px-2">
+            <div className="text-center md:text-end px-2">
               <h3 className="font-headline-lg text-[20px] leading-[28px] text-primary mb-2">
-                Teuku Anwar Kuta Krueng
+                {secondPerson.name}
               </h3>
               <p className="font-label-sm text-label-sm text-secondary uppercase tracking-widest">
-                Pimpinan Pondok Pesantren
+                {secondPerson.role}
               </p>
             </div>
           </motion.div>
