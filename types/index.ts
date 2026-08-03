@@ -16,11 +16,13 @@ export interface Service {
   icon?: string;
 }
 
+export type LeaderGroup = 'pembina' | 'pengawas' | 'pengurus_harian';
+
 export interface Leader {
   id: string;
   name: string;
   role: string;
-  group: 'Pembina' | 'Pengawas' | 'Pengurus Harian';
+  group: LeaderGroup;
   imageUrl: string;
 }
 

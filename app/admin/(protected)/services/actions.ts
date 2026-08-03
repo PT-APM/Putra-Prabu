@@ -5,33 +5,51 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { verifySession } from "@/lib/auth/dal";
 import { saveUploadedImage, deleteUploadedImage } from "@/lib/upload";
+import { getAdminLocale } from "@/lib/i18n/adminLocale";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { revalidateLocalizedPath } from "@/lib/i18n/revalidate";
 
-function parseServiceFields(formData: FormData) {
-  const title = String(formData.get("title") || "").trim();
-  const description = String(formData.get("description") || "").trim();
-  const icon = String(formData.get("icon") || "").trim();
+function trimmed(formData: FormData, name: string) {
+  return String(formData.get(name) || "").trim();
+}
+
+async function parseServiceFields(formData: FormData) {
+  const titleId = trimmed(formData, "titleId");
+  const descriptionId = trimmed(formData, "descriptionId");
+  const icon = trimmed(formData, "icon");
   const order = Number(formData.get("order") || 0);
 
-  if (!title || !description) {
-    throw new Error("Judul dan deskripsi wajib diisi.");
+  if (!titleId || !descriptionId) {
+    const dict = getDictionary(await getAdminLocale());
+    throw new Error(dict.admin.services.errorRequired);
   }
 
-  return { title, description, icon: icon || null, order: Number.isFinite(order) ? order : 0 };
+  return {
+    titleId,
+    titleEn: trimmed(formData, "titleEn") || null,
+    titleAr: trimmed(formData, "titleAr") || null,
+    descriptionId,
+    descriptionEn: trimmed(formData, "descriptionEn") || null,
+    descriptionAr: trimmed(formData, "descriptionAr") || null,
+    icon: icon || null,
+    order: Number.isFinite(order) ? order : 0,
+  };
 }
 
 function revalidateServicePaths() {
   revalidatePath("/admin/services");
-  revalidatePath("/");
-  revalidatePath("/about");
+  revalidateLocalizedPath("/");
+  revalidateLocalizedPath("/about");
 }
 
 export async function createService(formData: FormData) {
   await verifySession();
-  const fields = parseServiceFields(formData);
+  const fields = await parseServiceFields(formData);
 
   const image = formData.get("image");
   if (!(image instanceof File) || image.size === 0) {
-    throw new Error("Gambar wajib diunggah.");
+    const dict = getDictionary(await getAdminLocale());
+    throw new Error(dict.admin.services.errorImage);
   }
   const imageUrl = await saveUploadedImage(image, "service");
 
@@ -42,7 +60,7 @@ export async function createService(formData: FormData) {
 
 export async function updateService(id: string, formData: FormData) {
   await verifySession();
-  const fields = parseServiceFields(formData);
+  const fields = await parseServiceFields(formData);
   const existing = await prisma.service.findUniqueOrThrow({ where: { id } });
 
   let imageUrl = existing.imageUrl;

@@ -23,36 +23,52 @@ model Admin {
 }
 
 model NewsArticle {
-  id        String   @id @default(cuid())
-  title     String
-  summary   String   @db.Text
-  content   String?  @db.Text
-  date      DateTime
-  category  String
-  imageUrl  String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  titleId    String
+  titleEn    String?
+  titleAr    String?
+  summaryId  String   @db.Text
+  summaryEn  String?  @db.Text
+  summaryAr  String?  @db.Text
+  contentId  String?  @db.Text
+  contentEn  String?  @db.Text
+  contentAr  String?  @db.Text
+  date       DateTime
+  categoryId String
+  categoryEn String?
+  categoryAr String?
+  imageUrl   String   @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@map("newsarticle")
 }
 
 model Service {
-  id          String   @id @default(cuid())
-  title       String
-  description String   @db.Text
-  imageUrl    String   @db.Text
-  icon        String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  titleId       String
+  titleEn       String?
+  titleAr       String?
+  descriptionId String   @db.Text
+  descriptionEn String?  @db.Text
+  descriptionAr String?  @db.Text
+  imageUrl      String   @db.Text
+  icon          String?
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("service")
 }
 
+// group is a stable key ('pembina' | 'pengawas' | 'pengurus_harian'), not
+// display text — the translated label is resolved from the i18n dictionary.
 model Leader {
   id        String   @id @default(cuid())
   name      String
-  role      String
+  roleId    String
+  roleEn    String?
+  roleAr    String?
   group     String
   imageUrl  String
   order     Int      @default(0)
@@ -65,7 +81,9 @@ model Leader {
 model ContactInfo {
   id        String   @id @default(cuid())
   icon      String
-  label     String
+  labelId   String
+  labelEn   String?
+  labelAr   String?
   value     String   @db.Text
   order     Int      @default(0)
   createdAt DateTime @default(now())

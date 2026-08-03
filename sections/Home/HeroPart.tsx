@@ -1,6 +1,10 @@
 "use client";
 import { motion } from 'motion/react';
 import Link from 'next/link';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { localeHref } from '@/lib/i18n/path';
+import type { Locale } from '@/lib/i18n/config';
+
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -15,7 +19,8 @@ const staggerContainer = {
     }
   }
 };
-export default function HeroPart() {
+export default function HeroPart({ locale }: { locale: Locale }) {
+  const dict = getDictionary(locale);
   return (
     <section className="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-surface-container-low to-background">
       <div className="absolute inset-0 z-0">
@@ -42,28 +47,26 @@ export default function HeroPart() {
             variants={fadeIn}
             className="font-display-lg text-display-lg text-primary drop-shadow-sm"
           >
-            Membangun Generasi Unggul Berlandaskan Nilai Islam
+            {dict.home.hero.title}
           </motion.h1>
           <motion.p
             variants={fadeIn}
             className="font-body-md text-body-md text-on-surface-variant max-w-lg"
           >
-            Yayasan Putra Prabu Indonesia Raya berkomitmen untuk menyediakan
-            pendidikan berkualitas, inovasi teknologi, dan layanan masyarakat
-            yang berintegritas tinggi.
+            {dict.home.hero.description}
           </motion.p>
           <motion.div variants={fadeIn} className="flex gap-4 pt-4">
             <Link
-              href="/about"
+              href={localeHref(locale, '/about')}
               className="bg-primary text-on-primary px-8 py-3 rounded-full font-label-sm text-label-sm shadow-soft hover:shadow-soft-hover transition-all border border-transparent inline-block"
             >
-              Jelajahi Program
+              {dict.home.hero.ctaPrimary}
             </Link>
             <Link
-              href="/about"
+              href={localeHref(locale, '/about')}
               className="bg-surface-container-lowest/50 backdrop-blur-sm text-primary px-8 py-3 rounded-full font-label-sm text-label-sm hover:bg-surface-variant/80 transition-all border border-primary/20 hover:border-primary shadow-sm inline-block"
             >
-              Tentang Kami
+              {dict.home.hero.ctaSecondary}
             </Link>
           </motion.div>
         </motion.div>

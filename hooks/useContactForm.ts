@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
 
-export function useContactForm() {
+export function useContactForm(locale: Locale) {
+  const dict = getDictionary(locale);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,21 +27,21 @@ export function useContactForm() {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, locale }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Gagal mengirim pesan.');
+        throw new Error(data.error || dict.contact.form.errorGeneric);
       }
 
       setStatus("success");
       setFormData({ name: "", email: "", subject: "", message: "" });
-      
-    } catch (error: any) {
+
+    } catch (error: unknown) {
       setStatus("error");
-      setErrorMessage(error.message);
+      setErrorMessage(error instanceof Error ? error.message : dict.contact.form.errorGeneric);
     }
   };
 
