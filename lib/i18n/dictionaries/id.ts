@@ -77,10 +77,13 @@ const dict = {
         "Berikhtiar menyelenggarakan pendidikan berkualitas dan pemberdayaan umat melalui berbagai bidang kegiatan.",
     },
     leadership: {
-      heading: "Struktur Kepemimpinan",
+      heading: "Pimpinan Yayasan",
       intro:
-        "Tokoh-tokoh berdedikasi yang mengarahkan Yayasan Putra Prabu Indonesia Raya dengan amanah dan profesionalisme.",
+        "Sosok yang memimpin dan mengarahkan Yayasan Putra Prabu Indonesia Raya dengan amanah dan profesionalisme.",
       boardPrefix: "Dewan",
+      welcomeLabel: "Kata Sambutan",
+      welcomeMessage:
+        "Assalamu'alaikum warahmatullahi wabarakatuh. Puji syukur kami panjatkan kehadirat Allah SWT atas segala rahmat dan karunia-Nya, sehingga Yayasan Putra Prabu Indonesia Raya dapat terus berikhtiar menghadirkan pendidikan yang berkualitas dan pelayanan umat yang amanah. Atas nama seluruh keluarga besar yayasan, kami mengucapkan terima kasih atas kepercayaan dan dukungan yang telah diberikan. Mari bersama-sama kita bangun generasi yang unggul dalam ilmu pengetahuan dan akhlak mulia. Semoga Allah SWT senantiasa membimbing langkah kita. Aamiin.",
     },
     pimpinanPonpes: {
       heading: "Pimpinan Pondok Pesantren",
@@ -90,6 +93,21 @@ const dict = {
         { name: "Abu Kuta Krueng", role: "Pimpinan Pondok Pesantren (Alm.)" },
         { name: "Teuku Anwar Kuta Krueng", role: "Pimpinan Pondok Pesantren" },
       ] as { name: string; role: string }[],
+    },
+    visiMisi: {
+      heading: "Visi & Misi",
+      intro:
+        "Landasan cita-cita dan langkah nyata Yayasan Putra Prabu Indonesia Raya dalam membangun umat.",
+      visiLabel: "Visi",
+      visiText:
+        "Menjadi yayasan terkemuka yang melahirkan generasi cerdas, berakhlak mulia, dan bermanfaat bagi umat serta bangsa melalui pendidikan, riset, dan pelayanan masyarakat yang berlandaskan nilai-nilai keislaman.",
+      misiLabel: "Misi",
+      misiPoints: [
+        "Menyelenggarakan pendidikan berkualitas berlandaskan nilai-nilai keislaman",
+        "Membentuk karakter dan akhlak mulia peserta didik sejak usia dini",
+        "Mengembangkan riset dan inovasi teknologi yang bermanfaat bagi umat",
+        "Menyediakan pelayanan sosial dan kepedulian umat yang amanah dan berkelanjutan",
+      ] as string[],
     },
   },
   contact: {

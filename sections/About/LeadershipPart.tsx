@@ -10,16 +10,6 @@ const fadeIn = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
 interface LeadershipPartProps {
   pembina: Leader;
   pengawas: Leader;
@@ -34,7 +24,12 @@ export default function LeadershipPart({
   locale,
 }: LeadershipPartProps) {
   const dict = getDictionary(locale);
-  const groupLabel = (group: Leader["group"]) => dict.leadershipGroups[group];
+
+  const chairman = [pembina, pengawas, ...pengurusHarian].find(
+    (leader) => leader?.name === "Hari Mulyono"
+  );
+
+  if (!chairman) return null;
 
   return (
     <section className="section-gradient-reverse border-t border-outline-variant/30 relative">
@@ -55,94 +50,42 @@ export default function LeadershipPart({
           </p>
         </motion.div>
 
-        {/* Pembina & Pengawas (Top Tier) */}
+        {/* Ketua - Welcome Message */}
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeIn}
+          className="max-w-5xl mx-auto"
         >
-          {[pembina, pengawas].map((leader) => {
-            return (
-              leader && (
-                <motion.div
-                  variants={fadeIn}
-                  key={leader.id}
-                  className="group relative overflow-hidden rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300"
-                >
-                  <div className="aspect-[4/3] overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
-                    <Image
-                      width={200}
-                      height={200}
-                      src={leader.imageUrl}
-                      loading="eager"
-                      alt={leader.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute top-4 start-4 z-20">
-                      <span className="inline-block px-4 py-1.5 bg-surface-container-lowest/90 backdrop-blur-md text-primary rounded-full font-label-sm text-label-sm shadow-sm border border-outline-variant/20">
-                        {dict.about.leadership.boardPrefix} {groupLabel(leader.group)}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-6 text-center bg-surface-container-lowest relative z-20">
-                    <h3 className="font-headline-lg text-[22px] leading-[28px] text-primary mb-2">
-                      {leader.name}
-                    </h3>
-                    <p className="font-label-sm text-label-sm text-secondary uppercase tracking-widest">
-                      {leader.role}
-                    </p>
-                  </div>
-                </motion.div>
-              )
-            );
-          })}
-        </motion.div>
-
-        {/* Pengurus Harian */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-        >
-          {pengurusHarian.map((leader) => {
-            return (
-              <motion.div
-                variants={fadeIn}
-                key={leader.id}
-                className="group relative overflow-hidden rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-[0_4px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300"
-              >
-                <div className="aspect-[4/3] overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
-                  <Image
-                    width={200}
-                    height={200}
-                    src={leader.imageUrl}
-                    loading="eager"
-                    alt={leader.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-4 start-4 z-20">
-                    <span className="inline-block px-4 py-1.5 bg-surface-container-lowest/90 backdrop-blur-md text-primary rounded-full font-label-sm text-label-sm shadow-sm border border-outline-variant/20">
-                      {groupLabel(leader.group)}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-6 text-center bg-surface-container-lowest relative z-20">
-                  <h3 className="font-headline-lg text-[20px] leading-[28px] text-primary mb-2">
-                    {leader.name}
-                  </h3>
-                  <p className="font-label-sm text-label-sm text-secondary uppercase tracking-widest">
-                    {leader.role}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+          <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+            <div className="aspect-[4/3] md:aspect-auto relative overflow-hidden">
+              <Image
+                width={400}
+                height={400}
+                src={chairman.imageUrl}
+                loading="eager"
+                alt={chairman.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-8 md:p-10 flex flex-col justify-center">
+              <span className="inline-block mb-3 font-label-sm text-label-sm text-primary uppercase tracking-widest">
+                {dict.about.leadership.welcomeLabel}
+              </span>
+              <p className="font-body-md text-body-md text-secondary leading-relaxed mb-6">
+                {dict.about.leadership.welcomeMessage}
+              </p>
+              <div>
+                <h3 className="font-headline-lg text-[22px] leading-[28px] text-primary mb-1">
+                  {chairman.name}
+                </h3>
+                <p className="font-label-sm text-label-sm text-secondary uppercase tracking-widest">
+                  {chairman.role}
+                </p>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

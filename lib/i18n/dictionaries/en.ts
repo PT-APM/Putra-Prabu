@@ -79,10 +79,13 @@ const dict: Dictionary = {
         "Striving to provide quality education and community empowerment through various fields of activity.",
     },
     leadership: {
-      heading: "Leadership Structure",
+      heading: "Foundation Leader",
       intro:
-        "Dedicated figures who lead Yayasan Putra Prabu Indonesia Raya with trustworthiness and professionalism.",
+        "The figure who leads and directs Yayasan Putra Prabu Indonesia Raya with trustworthiness and professionalism.",
       boardPrefix: "Board of",
+      welcomeLabel: "Welcome Message",
+      welcomeMessage:
+        "Assalamu'alaikum warahmatullahi wabarakatuh. All praise be to Allah SWT for His countless blessings, allowing Yayasan Putra Prabu Indonesia Raya to continue striving to provide quality education and trustworthy service to the community. On behalf of the entire foundation family, we extend our gratitude for the trust and support given to us. Let us work together to build a generation excellent in both knowledge and noble character. May Allah SWT continue to guide our every step. Aamiin.",
     },
     pimpinanPonpes: {
       heading: "Islamic Boarding School Leaders",
@@ -91,6 +94,21 @@ const dict: Dictionary = {
       people: [
         { name: "Abu Kuta Krueng", role: "Islamic Boarding School Leader (Late)" },
         { name: "Teuku Anwar Kuta Krueng", role: "Islamic Boarding School Leader" },
+      ],
+    },
+    visiMisi: {
+      heading: "Vision & Mission",
+      intro:
+        "The foundation of Yayasan Putra Prabu Indonesia Raya's aspirations and concrete steps in building the ummah.",
+      visiLabel: "Vision",
+      visiText:
+        "To become a leading foundation that raises an intelligent, noble-charactered generation, beneficial to the ummah and the nation through education, research, and community service grounded in Islamic values.",
+      misiLabel: "Mission",
+      misiPoints: [
+        "Providing quality education grounded in Islamic values",
+        "Shaping the character and noble conduct of students from an early age",
+        "Developing research and technological innovation that benefits the ummah",
+        "Delivering trustworthy and sustainable social service and community care",
       ],
     },
   },

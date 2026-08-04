@@ -46,7 +46,7 @@ export default function PimpinanPonpesPart({ locale }: { locale: Locale }) {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={staggerContainer}
-          className="max-w-4xl mx-auto"
+          className="max-w-5xl mx-auto"
         >
           <motion.div
             variants={fadeIn}
