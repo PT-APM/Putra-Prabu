@@ -22,7 +22,7 @@ export default function Footer({ contactInfo, locale }: FooterProps) {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-section-padding max-w-container-max mx-auto relative z-10">
         <div className="md:col-span-2 space-y-6">
           <Link href={localeHref(locale, '/')} className="hover:opacity-95 transition-opacity inline-block">
-            <Logo variant="horizontal" iconSize={56} />
+            <Logo variant="horizontal" iconSize={56} useImageIcon/>
           </Link>
           <p className="text-on-surface-variant max-w-md">
             {dict.footer.tagline}
