@@ -86,9 +86,35 @@ const dict = {
         "Assalamu'alaikum warahmatullahi wabarakatuh. Puji syukur kami panjatkan kehadirat Allah SWT atas segala rahmat dan karunia-Nya, sehingga Yayasan Putra Prabu Indonesia Raya dapat terus berikhtiar menghadirkan pendidikan yang berkualitas dan pelayanan umat yang amanah. Atas nama seluruh keluarga besar yayasan, kami mengucapkan terima kasih atas kepercayaan dan dukungan yang telah diberikan. Mari bersama-sama kita bangun generasi yang unggul dalam ilmu pengetahuan dan akhlak mulia. Semoga Allah SWT senantiasa membimbing langkah kita. Aamiin.",
     },
     pimpinanPonpes: {
-      heading: "Pimpinan Pondok Pesantren",
+      heading: "Pondok Pesantren Terafiliasi",
       intro:
-        "Sosok teladan yang membimbing santri dan mengawal syiar dakwah Pondok Pesantren Yayasan Putra Prabu Indonesia Raya.",
+        "Dayah Darul Munawwarah Kuta Krueng, pondok pesantren afiliasi Yayasan Putra Prabu Indonesia Raya yang telah membina santri dan mengawal syiar dakwah sejak tahun 1966.",
+      ponpes: {
+        name: "Dayah Darul Munawwarah",
+        location: "Kuta Krueng, Pidie Jaya",
+        history:
+          "Didirikan pada tahun 1966 oleh almarhum Tgk. H. Usman Ali, yang lebih dikenal sebagai Abu Kuta Krueng, Dayah Darul Munawwarah telah menjadi pusat pendidikan dan dakwah Islam bagi masyarakat Pidie Jaya dan sekitarnya selama lebih dari setengah abad.",
+        addressLabel: "Alamat",
+        address:
+          "Jln. Abu Kuta Krueng, Desa Kuta Krueng, Kecamatan Banda Dua, Pidie Jaya",
+        facilitiesLabel: "Fasilitas",
+        facilities: [
+          "Masjid/Musala",
+          "Asrama",
+          "Ruang Kelas",
+          "Kantor",
+          "Perpustakaan",
+          "Kantin/Ruang Makan",
+          "UKS (Unit Kesehatan Santri)",
+          "Aula/Ruang Serbaguna",
+          "Sarana Olahraga",
+          "Koperasi",
+          "Laboratorium",
+          "Akses Internet",
+        ] as string[],
+        locationButton: "Lihat Lokasi",
+      },
+      peopleHeading: "Pimpinan Pondok Pesantren",
       people: [
         { name: "Abu Kuta Krueng", role: "Pimpinan Pondok Pesantren (Alm.)" },
         { name: "Teuku Anwar Kuta Krueng", role: "Pimpinan Pondok Pesantren" },

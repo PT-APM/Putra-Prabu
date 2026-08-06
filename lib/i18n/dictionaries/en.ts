@@ -88,9 +88,35 @@ const dict: Dictionary = {
         "Assalamu'alaikum warahmatullahi wabarakatuh. All praise be to Allah SWT for His countless blessings, allowing Yayasan Putra Prabu Indonesia Raya to continue striving to provide quality education and trustworthy service to the community. On behalf of the entire foundation family, we extend our gratitude for the trust and support given to us. Let us work together to build a generation excellent in both knowledge and noble character. May Allah SWT continue to guide our every step. Aamiin.",
     },
     pimpinanPonpes: {
-      heading: "Islamic Boarding School Leaders",
+      heading: "Affiliated Islamic Boarding School",
       intro:
-        "Exemplary figures who guide the students and oversee the Islamic outreach of the Yayasan Putra Prabu Indonesia Raya Islamic Boarding School.",
+        "Dayah Darul Munawwarah Kuta Krueng, an Islamic boarding school affiliated with Yayasan Putra Prabu Indonesia Raya that has guided students and upheld Islamic outreach since 1966.",
+      ponpes: {
+        name: "Dayah Darul Munawwarah",
+        location: "Kuta Krueng, Pidie Jaya",
+        history:
+          "Founded in 1966 by the late Tgk. H. Usman Ali, better known as Abu Kuta Krueng, Dayah Darul Munawwarah has become a center of Islamic education and outreach for the people of Pidie Jaya and its surroundings for more than half a century.",
+        addressLabel: "Address",
+        address:
+          "Jln. Abu Kuta Krueng, Kuta Krueng Village, Banda Dua District, Pidie Jaya",
+        facilitiesLabel: "Facilities",
+        facilities: [
+          "Mosque/Prayer Hall",
+          "Dormitory",
+          "Classrooms",
+          "Office",
+          "Library",
+          "Canteen/Dining Hall",
+          "Health Unit (UKS)",
+          "Multipurpose Hall",
+          "Sports Facilities",
+          "Cooperative",
+          "Laboratory",
+          "Internet Access",
+        ],
+        locationButton: "View Location",
+      },
+      peopleHeading: "Islamic Boarding School Leaders",
       people: [
         { name: "Abu Kuta Krueng", role: "Islamic Boarding School Leader (Late)" },
         { name: "Teuku Anwar Kuta Krueng", role: "Islamic Boarding School Leader" },
