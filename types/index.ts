@@ -32,3 +32,16 @@ export interface ContactInfo {
   label: string;
   value: string;
 }
+
+export interface PonpesInfo {
+  slug: string;
+  name: string;
+  location: string;
+  history: string;
+  address: string;
+  facilities: string[];
+  mapsUrl: string;
+  images: string[];
+  pimpinanImage: string;
+  people: { name: string; role: string }[];
+}

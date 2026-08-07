@@ -10,11 +10,21 @@ export default async function About({ params }: { params: Promise<{ locale: stri
   const locale = isLocale(rawLocale) ? rawLocale : defaultLocale;
 
   const services = await repository.services.getAll(locale);
+  const [pembinaList, pengawasList, pengurusHarian] = await Promise.all([
+    repository.leadership.getByGroup('pembina', locale),
+    repository.leadership.getByGroup('pengawas', locale),
+    repository.leadership.getByGroup('pengurus_harian', locale),
+  ]);
+  const chairman = [pembinaList[0], pengawasList[0], ...pengurusHarian].find(
+    (leader) => leader?.name === 'Hari Mulyono'
+  );
 
   return (
     <MainLayout locale={locale}>
       {/* Hero Section */}
-      <HeroPart locale={locale} />
+      <HeroPart locale={locale} chairman={chairman} />
+      {/* Welcome Message Section */}
+      
       {/* Visi & Misi Section */}
       <VisiMisiPart locale={locale} />
 
