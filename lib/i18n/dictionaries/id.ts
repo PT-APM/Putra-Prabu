@@ -1,3 +1,5 @@
+import type { PonpesInfo } from "@/types";
+
 const dict = {
   meta: {
     title: "Yayasan Putra Prabu Indonesia Raya",
@@ -88,37 +90,68 @@ const dict = {
     pimpinanPonpes: {
       heading: "Pondok Pesantren Terafiliasi",
       intro:
-        "Dayah Darul Munawwarah Kuta Krueng, pondok pesantren afiliasi Yayasan Putra Prabu Indonesia Raya yang telah membina santri dan mengawal syiar dakwah sejak tahun 1966.",
-      ponpes: {
-        name: "Dayah Darul Munawwarah",
-        location: "Kuta Krueng, Pidie Jaya",
-        history:
-          "Didirikan pada tahun 1966 oleh almarhum Tgk. H. Usman Ali, yang lebih dikenal sebagai Abu Kuta Krueng, Dayah Darul Munawwarah telah menjadi pusat pendidikan dan dakwah Islam bagi masyarakat Pidie Jaya dan sekitarnya selama lebih dari setengah abad.",
-        addressLabel: "Alamat",
-        address:
-          "Jln. Abu Kuta Krueng, Desa Kuta Krueng, Kecamatan Banda Dua, Pidie Jaya",
-        facilitiesLabel: "Fasilitas",
-        facilities: [
-          "Masjid/Musala",
-          "Asrama",
-          "Ruang Kelas",
-          "Kantor",
-          "Perpustakaan",
-          "Kantin/Ruang Makan",
-          "UKS (Unit Kesehatan Santri)",
-          "Aula/Ruang Serbaguna",
-          "Sarana Olahraga",
-          "Koperasi",
-          "Laboratorium",
-          "Akses Internet",
-        ] as string[],
-        locationButton: "Lihat Lokasi",
-      },
+        "Pondok pesantren yang berafiliasi dengan Yayasan Putra Prabu Indonesia Raya dalam membina santri dan mengawal syiar dakwah Islam.",
+      detailButton: "Lihat Detail",
       peopleHeading: "Pimpinan Pondok Pesantren",
-      people: [
-        { name: "Abu Kuta Krueng", role: "Pimpinan Pondok Pesantren (Alm.)" },
-        { name: "Teuku Anwar Kuta Krueng", role: "Pimpinan Pondok Pesantren" },
-      ] as { name: string; role: string }[],
+      addressLabel: "Alamat",
+      facilitiesLabel: "Fasilitas",
+      locationButton: "Lihat Lokasi",
+      list: [
+        {
+          slug: "dayah-darul-munawwarah",
+          name: "Dayah Darul Munawwarah",
+          location: "Kuta Krueng, Pidie Jaya",
+          history:
+            "Didirikan pada tahun 1966 oleh almarhum Tgk. H. Usman Ali, yang lebih dikenal sebagai Abu Kuta Krueng, Dayah Darul Munawwarah telah menjadi pusat pendidikan dan dakwah Islam bagi masyarakat Pidie Jaya dan sekitarnya selama lebih dari setengah abad.",
+          address:
+            "Jln. Abu Kuta Krueng, Desa Kuta Krueng, Kecamatan Banda Dua, Pidie Jaya",
+          facilities: [
+            "Masjid/Musala",
+            "Asrama",
+            "Ruang Kelas",
+            "Kantor",
+            "Perpustakaan",
+            "Kantin/Ruang Makan",
+            "UKS (Unit Kesehatan Santri)",
+            "Aula/Ruang Serbaguna",
+            "Sarana Olahraga",
+            "Koperasi",
+            "Laboratorium",
+            "Akses Internet",
+          ],
+          mapsUrl: "https://maps.app.goo.gl/DYM7PN8ehdu2SMfX8",
+          images: [
+            "/img/Foto Ponpes/cover.webp",
+            "/img/Foto Ponpes/1.webp",
+            "/img/Foto Ponpes/2.webp",
+            "/img/Foto Ponpes/3.webp",
+            "/img/Foto Ponpes/4.webp",
+            "/img/Foto Ponpes/5.webp",
+          ],
+          pimpinanImage: "/img/leadership/pimpinan_ponpes.png",
+          people: [
+            { name: "Abu Kuta Krueng", role: "Pimpinan Pondok Pesantren (Alm.)" },
+            { name: "Teuku Anwar Kuta Krueng", role: "Pimpinan Pondok Pesantren" },
+          ],
+        },
+        {
+          slug: "darul-munawaroh-al-madani",
+          name: "Pondok Pesantren Darul Munawaroh Al-Madani",
+          location: "Sunggal, Medan, Sumatera Utara",
+          history: "",
+          address: "",
+          facilities: [],
+          mapsUrl: "",
+          images: ["/img/Foto Ponpes 2/ponpes_2.png"],
+          pimpinanImage: "/img/Foto Ponpes 2/leader_ponpes_2.jpg",
+          people: [
+            {
+              name: "Mhd Okta Duli Lubis, S.Ag., M.Pd.",
+              role: "Pimpinan Pondok Pesantren",
+            },
+          ],
+        },
+      ] as PonpesInfo[],
     },
     visiMisi: {
       heading: "Visi & Misi",
