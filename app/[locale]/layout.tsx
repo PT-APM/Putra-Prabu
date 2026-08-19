@@ -20,6 +20,11 @@ export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
+// Pages under this layout read live data from the database (services,
+// leadership, news, etc.) via server actions in the admin panel, so they
+// must render per-request rather than being prerendered with build-time data.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

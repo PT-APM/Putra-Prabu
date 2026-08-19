@@ -18,6 +18,13 @@ ARG NEXT_PUBLIC_AWS_S3_BUCKET
 ENV NEXT_PUBLIC_AWS_REGION=$NEXT_PUBLIC_AWS_REGION
 ENV NEXT_PUBLIC_AWS_S3_BUCKET=$NEXT_PUBLIC_AWS_S3_BUCKET
 
+# Build-time-only placeholder: pages are force-dynamic, so no query ever
+# runs against this during `next build` — it only has to be a non-empty
+# string so the Prisma MariaDB adapter doesn't throw while the page modules
+# are imported to collect route data. The real DATABASE_URL is supplied at
+# container runtime (see docker-compose on the deploy host).
+ENV DATABASE_URL="mysql://build:build@localhost:3306/build"
+
 RUN npx prisma generate
 RUN npm run build
 
