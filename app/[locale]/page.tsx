@@ -16,7 +16,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     repository.leadership.getByGroup('pengurus_harian', locale),
   ]);
   const chairman = [pembinaList[0], pengawasList[0], ...pengurusHarian].find(
-      (leader) => leader?.name === 'Hari Mulyono'
+      (leader) => leader?.name === 'Ir. Muhammad Azhari, SH, MH'
     );
   const latestNews = await repository.news.getLatest(3, locale);
   const services = (await repository.services.getAll(locale)).slice(0, 3); // Showing a subset for the bento grid
