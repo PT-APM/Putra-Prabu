@@ -5,6 +5,7 @@ import "../globals.css";
 import { notFound } from "next/navigation";
 import { locales, isLocale, isRtl, defaultLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,7 +64,14 @@ export default async function LocaleLayout({
       dir={isRtl(locale) ? "rtl" : "ltr"}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+      {children}
+      <Script
+        src="https://analytics.waasidigital.com/script.js"
+        data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+        strategy="afterInteractive"
+      />
+      </body>
     </html>
   );
 }
