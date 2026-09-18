@@ -54,6 +54,7 @@ jobs:
           build-args: |
             NEXT_PUBLIC_AWS_REGION=${{ secrets.NEXT_PUBLIC_AWS_REGION }}
             NEXT_PUBLIC_AWS_S3_BUCKET=${{ secrets.NEXT_PUBLIC_AWS_S3_BUCKET }}
+            NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

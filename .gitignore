@@ -49,3 +49,4 @@ next-env.d.ts
 
 deploy_key
 deploy_key.pub
+/public/asset-ignore/*
